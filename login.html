@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Signup</title>
+    <style>
+        .form-container {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .form-container input {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+        }
+        .form-container button {
+            padding: 10px;
+            margin-top: 10px;
+            width: 48%;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-firestore.js"></script>
+</head>
+<body>
+
+<div class="form-container">
+    <h2 id="formTitle">Login</h2>
+    <form id="loginForm">
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <div style="display: flex; justify-content: space-between;">
+            <button type="button" onclick="toggleForm()">Sign Up</button>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+
+    <!-- Signup form fields (hidden initially) -->
+    <form id="signupForm" style="display: none;" onsubmit="saveUser(event)">
+        <input type="text" id="signupName" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="text" id="phone" placeholder="Phone Number" required>
+        <input type="password" id="signupPassword" placeholder="Password" required>
+        <input type="text" id="address" placeholder="Address" required>
+        <select id="role" required>
+            <option value="" disabled selected>Select Role</option>
+            <option value="donor">Donor</option>
+            <option value="admin">Admin</option>
+            <option value="volunteer">Volunteer</option>
+        </select>
+        <div style="display: flex; justify-content: space-between;">
+            <button type="button" onclick="toggleForm()">Login</button>
+            <button type="submit">Submit</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Firebase configuration
+    const firebaseConfig = {
+        apiKey: "AIzaSyBv3vKMih_ia_eADyo70cDHIrNTVBA-DM8",
+        authDomain: "sahayak-sss1234.firebaseapp.com",
+        databaseURL: "https://sahayak-sss1234-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "sahayak-sss1234",
+        storageBucket: "sahayak-sss1234.firebasestorage.app",
+        messagingSenderId: "883687602128",
+        appId: "1:883687602128:web:af63e6f2430a286ab56bd5",
+        measurementId: "G-JFRHLLZG1L"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    function toggleForm() {
+        const loginForm = document.getElementById("loginForm");
+        const signupForm = document.getElementById("signupForm");
+        const formTitle = document.getElementById("formTitle");
+
+        if (loginForm.style.display === "none") {
+            loginForm.style.display = "block";
+            signupForm.style.display = "none";
+            formTitle.innerText = "Login";
+        } else {
+            loginForm.style.display = "none";
+            signupForm.style.display = "block";
+            formTitle.innerText = "Sign Up";
+        }
+    }
+
+    async function saveUser(event) {
+        event.preventDefault();
+
+        const name = document.getElementById("signupName").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const password = document.getElementById("signupPassword").value;
+        const address = document.getElementById("address").value;
+        const role = document.getElementById("role").value;
+
+        try {
+            await db.collection("User").add({
+                name: name,
+                email: email,
+                phone: phone,
+                password: password,
+                address: address,
+                role: role
+            });
+            alert("User signed up successfully!");
+        } catch (error) {
+            console.error("Error adding user: ", error);
+            alert("Failed to sign up. Please try again.");
+        }
+    }
+</script>
+
+</body>
+</html>
