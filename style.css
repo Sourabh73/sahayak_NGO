@@ -74,6 +74,7 @@ header {
 .empowerment-section h2 {
   font-size: 2.5em; /* Reduced font size */
   font-weight: bold;
+  color: tomato;
   flex: 1;
   font-family: 'Playfair Display', serif;
 }
