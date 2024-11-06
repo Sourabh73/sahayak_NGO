@@ -79,10 +79,11 @@ header {
 }
 
 .empowerment-section img {
-  max-width: 50%;
-  height: auto;
+  max-width: 45%;
+  height: 55%;
   flex: 1;
   margin-top: 2cm;
+  border-radius: 62px;
 }
 
 /* Services Section Styling */
